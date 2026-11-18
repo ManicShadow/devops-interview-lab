@@ -1,6 +1,6 @@
 # DevOps Interview Lab
 
-A mobile-first app for practising DevOps interviews. It has 112 scenarios across Linux, Kubernetes, Helm, ArgoCD, Terraform, Ansible, Docker, CI/CD, GitLab, Jenkins, Monitoring, service mesh, SRE, AWS, cloud, networking, security, system design and behavioural questions.
+A mobile-first app for practising DevOps interviews. It has 111 scenarios across Linux, Kubernetes, Helm, ArgoCD, Terraform, Ansible, Docker, CI/CD, GitLab, Jenkins, Monitoring, service mesh, SRE, AWS, cloud, networking, security, system design and behavioural questions.
 
 Each incident scenario gives you a situation, an optional hint, then the troubleshooting steps and the commands to run. Behavioural questions give you a STAR structure and a sample answer. You can run a 5-question mock interview, filter by topic and track what you solved. Progress is stored in your browser.
 
