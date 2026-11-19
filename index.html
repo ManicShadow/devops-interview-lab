@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Interview Lab">
 <title>DevOps Interview Lab</title>
-<meta name="description" content="Practise DevOps interviews: 111 real incident scenarios, hints, fixes and a 5-question mock mode.">
+<meta name="description" content="Practise DevOps interviews: 111 incident scenarios plus concept questions, with hints, fixes and a 5-question mock mode.">
 <meta name="color-scheme" content="dark light">
 <meta name="theme-color" content="#2e3440" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#eceff4" media="(prefers-color-scheme: light)">
@@ -55,6 +55,9 @@ pre{background:#242933;color:#d8dee9;font:13px/1.55 ui-monospace,SFMono-Regular,
 button{cursor:pointer;touch-action:manipulation}
 button:focus-visible,[tabindex="-1"]:focus-visible{outline:2px solid var(--fr);outline-offset:2px}
 [tabindex="-1"]:focus:not(:focus-visible){outline:0}
+.tabs{display:flex;gap:6px;background:var(--s1);border-radius:12px;padding:4px;margin:0 0 16px}
+.tabs button{flex:1;border:0;border-radius:9px;padding:10px;background:none;color:var(--mu);font:inherit;font-weight:500}
+.tabs button[aria-selected=true]{background:var(--s2);color:var(--tx)}
 </style>
 </head>
 <body>
@@ -219,13 +222,50 @@ const S=[
 ["Linux","Senior","A server rebooted by itself at 03:12","Nobody restarted a production server, but it rebooted overnight.","Read the last messages of the previous boot.",["Check the reboot history.","Read the end of the previous boot’s journal.","Look for an OOM storm, kernel panic, watchdog, hardware error or provider maintenance.","Check crash dumps and cloud events, then enable kdump and alerts."],["last -x reboot shutdown | head","journalctl -b -1 -n 50 --no-pager","ls /var/crash /var/lib/systemd/pstore","dmesg -T | grep -iE 'panic|mce|oom'"],"Persistent logs and kdump make surprise reboots explainable."]
 ];
 
-const ID=S.map(s=>s[2]);
+const Q=[
+["Kubernetes","What is the difference between liveness, readiness and startup probes?","Liveness restarts a container that is stuck. Readiness removes the pod from Service endpoints until it can serve traffic. Startup holds the other two off while a slow app boots."],
+["Kubernetes","Deployment or StatefulSet?","A Deployment gives interchangeable pods. A StatefulSet gives stable names, ordered rollout and a dedicated volume per pod, which suits databases and brokers."],
+["Kubernetes","What happens when you run kubectl apply on a Deployment?","The API server authenticates, validates and stores it in etcd. The Deployment controller creates a ReplicaSet, which creates pods. The scheduler picks nodes and each kubelet starts the containers."],
+["Kubernetes","Requests versus limits?","Requests are what the scheduler reserves when placing the pod. Limits are the ceiling: going over the memory limit gets the container OOM-killed, going over the CPU limit gets it throttled."],
+["Kubernetes","ClusterIP, NodePort and LoadBalancer?","ClusterIP is reachable only inside the cluster. NodePort opens a port on every node. LoadBalancer provisions a cloud load balancer in front. Ingress adds HTTP routing on top of a Service."],
+["Kubernetes","How do you get zero-downtime deploys?","Rolling updates with maxUnavailable 0, readiness probes, a preStop sleep, graceful SIGTERM handling and a PodDisruptionBudget."],
+["Docker","Image versus container?","An image is a read-only layered template. A container is a running process created from it, with a thin writable layer on top."],
+["Docker","How do you make images smaller and safer?","Multi-stage builds, a minimal or distroless base, a non-root user, pinned versions, a .dockerignore, and layer order that caches dependencies."],
+["Docker","CMD versus ENTRYPOINT?","ENTRYPOINT is the fixed executable. CMD supplies default arguments that can be overridden at docker run."],
+["Terraform","What is state and why use a remote backend?","State maps your code to real resources. A remote backend with locking lets a team share it safely, and encryption protects the secrets it can contain."],
+["Terraform","How do you handle drift?","Run plan, or plan -refresh-only, to see it. Then either apply to revert the change, update the code to match, or import resources that were created outside Terraform."],
+["Terraform","count versus for_each?","count indexes by number, so removing a middle item shifts and recreates the rest. for_each keys by a stable string, so each change stays isolated."],
+["Terraform","How do you structure several environments?","Reusable modules, one root config and one state per environment, and pinned module and provider versions. Promote the same code through each environment."],
+["CI/CD","Continuous delivery versus continuous deployment?","Delivery keeps every change releasable, with a manual approval before production. Deployment ships every passing change to production automatically."],
+["CI/CD","Blue/green versus canary?","Blue/green switches all traffic between two full environments, so rollback is instant. Canary sends a small share first and watches metrics before widening."],
+["CI/CD","How do you keep secrets out of pipelines?","Use the platform secret store or a vault, short-lived OIDC credentials and masked variables. Never echo them or bake them into images."],
+["Linux","Load average is high but the CPU is idle. Why?","Load counts runnable tasks and those in uninterruptible sleep (D state), so heavy disk or NFS waits raise it. Check iostat, vmstat and top for wa and D-state processes."],
+["Linux","What is a zombie process?","A child that has exited but whose parent has not yet read its exit status. It holds only a PID entry. Fix the parent so it calls wait, or restart it."],
+["Linux","A disk is full but df shows free space. What is it?","Inodes may be exhausted: check df -i. Another cause is a deleted file still held open by a process, which lsof +L1 reveals."],
+["Networking","What happens when you open a URL?","DNS resolves the name, TCP connects, TLS negotiates, then the HTTP request passes through load balancers to the server and the response is rendered."],
+["Networking","TCP versus UDP?","TCP is connection-oriented with ordering and retransmission. UDP is connectionless and lighter, used for DNS, streaming and QUIC."],
+["Networking","How does DNS TTL affect a cutover?","Resolvers cache records for the TTL, so lower it ahead of the change. Otherwise some clients keep reaching the old address."],
+["AWS","Security group versus NACL?","Security groups are stateful, attach to instances or network interfaces, and only allow. NACLs are stateless, apply to a subnet, and support allow and deny rules."],
+["AWS","IAM role versus IAM user?","A user has long-lived credentials. A role is assumed for temporary credentials, which makes it the right choice for services and cross-account access."],
+["AWS","How do you make a service highly available?","Spread it across at least two AZs behind a load balancer with auto scaling and health checks, and use a multi-AZ database."],
+["Security","What does shift-left security mean?","Catching problems early: secret scanning, SAST, dependency and image scanning, and IaC policy checks in the pipeline, not after release."],
+["Security","How do you apply least privilege in Kubernetes?","Narrow RBAC roles per ServiceAccount, no cluster-admin, a read-only root filesystem, dropped capabilities and network policies."],
+["SRE","SLI, SLO and SLA?","An SLI is a measurement, an SLO is the internal target for it, and an SLA is the contractual promise with consequences if missed."],
+["SRE","What is an error budget?","The allowed unreliability, 100% minus the SLO. When it is spent you slow feature releases and prioritise reliability work."],
+["SRE","What makes a good alert?","It is symptom-based, actionable and tied to user impact, with a runbook. Avoid paging on causes such as high CPU."],
+["Monitoring","Metrics, logs and traces?","Metrics are cheap aggregates for alerting. Logs are detailed events. Traces follow a single request across services."],
+["Ansible","What does idempotent mean in Ansible?","Running a play again leaves the same result and reports no change, because modules check current state before acting."],
+["Helm","How do you install or upgrade, and roll back, with Helm?","helm upgrade --install creates the release if missing and upgrades it otherwise. helm rollback with a release name and revision restores an earlier one."],
+["ArgoCD","What is GitOps and how does Argo CD apply it?","Git is the source of truth. Argo CD compares the cluster to the repo, shows drift as OutOfSync and syncs it, optionally self-healing."],
+["GitLab","Artifacts versus cache in GitLab CI?","Artifacts pass job outputs to later stages and are guaranteed. Cache reuses dependencies between runs for speed and is best-effort."],
+];
+const ID=S.map(s=>s[2]),QID=Q.map(q=>"Q:"+q[1]);
 const ld=k=>{try{return JSON.parse(localStorage.getItem(k)||"{}")||{}}catch(e){return{}}};
 const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 const mig=o=>{const r={};for(const k in o){const t=/^\d+$/.test(k)?ID[k]:k;if(t)r[t]=o[k]}return r};
 let done=ld("il2"),hist=ld("il2h");
 if(!Object.keys(done).length&&!Object.keys(hist).length){done=mig(ld("il1"));hist=mig(ld("il1h"));sv("il2",done);sv("il2h",hist)}
-const st={v:"home",f:"All",s:"",q:[],i:0,hint:false,sol:false,res:{}};
+const st={k:"s",v:"home",f:"All",s:"",q:[],i:0,hint:false,sol:false,res:{}};
 const $=document.getElementById("app");
 let pushed=false;
 const EX=[
@@ -443,43 +483,49 @@ const EX=[
 ];
 const why=c=>{for(const[r,t]of EX)if(r.test(c))return t;return""};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const H=S.map(s=>s.flat().join(" ").toLowerCase());
-const pool=()=>{const w=st.s.toLowerCase().split(/\s+/).filter(Boolean);
- return S.reduce((a,s,i)=>{if((st.f=="All"||s[0]==st.f)&&w.every(x=>H[i].includes(x)))a.push(i);return a},[])};
-const solved=p=>p.filter(i=>done[ID[i]]===1).length;
-const mk=p=>{const n=Math.min(5,p.length);return n?`Start a mock interview (${n} question${n>1?"s":""})`:"No matching questions"};
-const stat=p=>st.s||st.f!="All"?`${p.length} scenario${p.length==1?"":"s"}, ${solved(p)} solved`:`${solved(p)} of ${S.length} solved`;
-const list=p=>`<p class="stat" aria-live="polite">${stat(p)}</p>`+(p.length?p.map(i=>{const d=done[ID[i]];return `<button class="item" data-a="open" data-v="${i}"><span class="dot ${d===1?"y":d===0?"n":""}"></span><span><b>${esc(S[i][2])}</b><small>${esc(S[i][0])}, ${esc(S[i][1])}</small></span></button>`}).join(""):`<p class="sub">No scenarios match. Try a shorter keyword.</p>`);
+const QT=[...new Set(Q.map(q=>q[0]))];
+const K={s:{d:S,id:ID,t:T,ti:x=>x[2],su:x=>x[0]+", "+x[1],ph:"Search keywords, e.g. OOM, helm, dns",w:"scenario"},q:{d:Q,id:QID,t:QT,ti:x=>x[1],su:x=>x[0],ph:"Search questions, e.g. probe, state, SLO",w:"question"}};
+const cur=()=>K[st.k];
+const HS={s:S.map(s=>s.flat().join(" ").toLowerCase()),q:Q.map(q=>q.join(" ").toLowerCase())};
+const pool=()=>{const w=st.s.toLowerCase().split(/\s+/).filter(Boolean),h=HS[st.k];
+ return cur().d.reduce((a,s,i)=>{if((st.f=="All"||s[0]==st.f)&&w.every(x=>h[i].includes(x)))a.push(i);return a},[])};
+const solved=p=>p.filter(i=>done[cur().id[i]]===1).length;
+const mk=p=>{const n=Math.min(5,p.length);return n?`Start a ${st.k=="q"?"quiz":"mock interview"} (${n} question${n>1?"s":""})`:"No matching items"};
+const stat=p=>st.s||st.f!="All"?`${p.length} ${cur().w}${p.length==1?"":"s"}, ${solved(p)} solved`:`${solved(p)} of ${cur().d.length} solved`;
+const list=p=>{const k=cur();return `<p class="stat" aria-live="polite">${stat(p)}</p>`+(p.length?p.map(i=>{const d=done[k.id[i]];return `<button class="item" data-a="open" data-v="${i}"><span class="dot ${d===1?"y":d===0?"n":""}"></span><span><b>${esc(k.ti(k.d[i]))}</b><small>${esc(k.su(k.d[i]))}</small></span></button>`}).join(""):`<p class="sub">Nothing matches. Try a shorter keyword.</p>`)};
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function pick(n){
- const p=shuffle(pool()).sort((a,b)=>(hist[ID[a]]||0)-(hist[ID[b]]||0)).slice(0,n);
- const t=Math.max(0,...Object.values(hist))+1;p.forEach(i=>hist[ID[i]]=t);sv("il2h",hist);
+function pick(n){const id=cur().id;
+ const p=shuffle(pool()).sort((a,b)=>(hist[id[a]]||0)-(hist[id[b]]||0)).slice(0,n);
+ const t=Math.max(0,...Object.values(hist))+1;p.forEach(i=>hist[id[i]]=t);sv("il2h",hist);
  return shuffle(p);
 }
 function go(q){st.q=q;st.i=0;st.hint=st.sol=false;st.res={};st.v="card";
  if(!pushed){history.pushState(null,"");pushed=true}
  render();scrollTo(0,0)}
 function render(){
+const k=cur();
 if(st.v=="home"){
- const p=pool();
- $.innerHTML=`<h1 tabindex="-1" data-f="nav">DevOps Interview Lab</h1><p class="sub">Real incidents and design questions. Work it out first, then check the fix.</p>
- <input id="sq" type="search" aria-label="Search scenarios" placeholder="Search keywords, e.g. OOM, helm, dns" value="${esc(st.s)}" autocomplete="off" autocapitalize="off" spellcheck="false">
- <div class="chips" role="group" aria-label="Filter by topic">${["All",...T].map(t=>`<button class="chip" aria-pressed="${st.f==t}" data-a="f" data-v="${esc(t)}">${esc(t)}</button>`).join("")}</div>
+ const p=pool(),q=st.k=="q";
+ $.innerHTML=`<h1 tabindex="-1" data-f="nav">DevOps Interview Lab</h1><p class="sub">${q?"Short concept questions. Answer out loud first, then check.":"Real incidents and design questions. Work it out first, then check the fix."}</p>
+ <div class="tabs" role="tablist">${[["s","Scenarios"],["q","Questions"]].map(([v,n])=>`<button role="tab" aria-selected="${st.k==v}" data-a="tab" data-v="${v}">${n}</button>`).join("")}</div>
+ <input id="sq" type="search" aria-label="Search" placeholder="${esc(k.ph)}" value="${esc(st.s)}" autocomplete="off" autocapitalize="off" spellcheck="false">
+ <div class="chips" role="group" aria-label="Filter by topic">${["All",...k.t].map(t=>`<button class="chip" aria-pressed="${st.f==t}" data-a="f" data-v="${esc(t)}">${esc(t)}</button>`).join("")}</div>
  <button class="btn p" id="mk" data-a="mock"${p.length?"":" disabled"}>${mk(p)}</button>
  <div id="lst">${list(p)}</div>${Object.keys(done).length?`<button class="btn q" data-a="reset">Reset progress</button>`:""}`;
 }else if(st.v=="card"){
- const s=S[st.q[st.i]],b=s[0]=="Behavioural";
- $.innerHTML=`<div class="bar"><button data-a="home">Exit</button><span>${st.i+1} of ${st.q.length}</span></div>
- <section class="alert"><span class="tag">${esc(s[0])}</span><span class="tag">${esc(s[1])}</span><h2 tabindex="-1" data-f="nav">${esc(s[2])}</h2><p>${esc(s[3])}</p>${st.hint?`<p class="hint">Hint: ${esc(s[4])}</p>`:""}</section>
- ${st.sol?`<h3 tabindex="-1" data-f="sol">${b?"How to structure your answer":"How to resolve it"}</h3><ol>${s[5].map(x=>`<li>${esc(x)}</li>`).join("")}</ol><h3>${b?"Sample answer":"Commands and what they do"}</h3>${s[6].map(c=>{if(b)return `<p>${esc(c)}</p>`;const w=why(c);return `<pre>${esc(c)}</pre>${w?`<p class="ex">${esc(w)}</p>`:""}`}).join("")}<p class="take">${esc(s[7])}</p>
- <div class="row"><button class="btn" data-a="rate" data-v="0">I missed it</button><button class="btn g" data-a="rate" data-v="1">I got it</button></div>`
- :`${st.hint?"":`<button class="btn" data-a="hint">Show a hint</button>`}<button class="btn p" data-a="sol" data-f="hint">Show solution</button>`}`;
+ const s=k.d[st.q[st.i]],Qm=st.k=="q",b=!Qm&&s[0]=="Behavioural";
+ const top=`<div class="bar"><button data-a="home">Exit</button><span>${st.i+1} of ${st.q.length}</span></div>`;
+ const rate=`<div class="row"><button class="btn" data-a="rate" data-v="0">I missed it</button><button class="btn g" data-a="rate" data-v="1">${Qm?"I knew it":"I got it"}</button></div>`;
+ $.innerHTML=top+(Qm?`<section class="alert"><span class="tag">${esc(s[0])}</span><h2 tabindex="-1" data-f="nav">${esc(s[1])}</h2></section>`+(st.sol?`<h3 tabindex="-1" data-f="sol">Answer</h3><p>${esc(s[2])}</p>${rate}`:`<button class="btn p" data-a="sol">Show answer</button>`)
+ :`<section class="alert"><span class="tag">${esc(s[0])}</span><span class="tag">${esc(s[1])}</span><h2 tabindex="-1" data-f="nav">${esc(s[2])}</h2><p>${esc(s[3])}</p>${st.hint?`<p class="hint">Hint: ${esc(s[4])}</p>`:""}</section>
+ ${st.sol?`<h3 tabindex="-1" data-f="sol">${b?"How to structure your answer":"How to resolve it"}</h3><ol>${s[5].map(x=>`<li>${esc(x)}</li>`).join("")}</ol><h3>${b?"Sample answer":"Commands and what they do"}</h3>${s[6].map(c=>{if(b)return `<p>${esc(c)}</p>`;const w=why(c);return `<pre>${esc(c)}</pre>${w?`<p class="ex">${esc(w)}</p>`:""}`}).join("")}<p class="take">${esc(s[7])}</p>${rate}`
+ :`${st.hint?"":`<button class="btn" data-a="hint">Show a hint</button>`}<button class="btn p" data-a="sol" data-f="hint">Show solution</button>`}`);
 }else{
  const ids=st.q,ok=ids.filter(i=>st.res[i]==1).length,miss=ids.filter(i=>st.res[i]==0);
  $.innerHTML=`<div class="bar"><span tabindex="-1" data-f="nav">Session complete</span></div><div class="score">${ok} / ${ids.length}</div>
  <p class="sub">${miss.length?"Review these and try them again:":"Clean sweep."}</p>
- ${miss.map(i=>`<div class="item"><span class="dot n"></span><span><b>${esc(S[i][2])}</b><small>${esc(S[i][0])}</small></span></div>`).join("")}
- ${miss.length?`<button class="btn p" data-a="retry">Retry missed</button>`:""}<button class="btn" data-a="home">Back to scenarios</button>`;
+ ${miss.map(i=>`<div class="item"><span class="dot n"></span><span><b>${esc(k.ti(k.d[i]))}</b><small>${esc(k.d[i][0])}</small></span></div>`).join("")}
+ ${miss.length?`<button class="btn p" data-a="retry">Retry missed</button>`:""}<button class="btn" data-a="home">Back to list</button>`;
 }}
 document.addEventListener("input",e=>{
  if(e.target.id!="sq")return;
@@ -490,6 +536,7 @@ document.addEventListener("click",e=>{
  const b=e.target.closest("[data-a]");if(!b)return;const a=b.dataset.a,v=b.dataset.v;
  const cs=$.querySelector(".chips"),sl=cs?cs.scrollLeft:0;let f="nav";
  if(a=="f"){st.f=v;f=null}
+ else if(a=="tab"){st.k=v;st.f="All";st.s="";f=null}
  else if(a=="mock")return go(pick(5));
  else if(a=="open")return go([+v]);
  else if(a=="home"){if(pushed){history.back();return}st.v="home"}
@@ -497,11 +544,11 @@ document.addEventListener("click",e=>{
  else if(a=="sol"){st.sol=true;f="sol"}
  else if(a=="retry")return go(st.q.filter(i=>st.res[i]==0));
  else if(a=="reset"){if(!confirm("Clear all saved progress?"))return;done={};hist={};sv("il2",done);sv("il2h",hist)}
- else if(a=="rate"){const id=st.q[st.i];st.res[id]=+v;done[ID[id]]=+v;sv("il2",done);
+ else if(a=="rate"){const id=st.q[st.i];st.res[id]=+v;done[cur().id[id]]=+v;sv("il2",done);
   if(st.i+1<st.q.length){st.i++;st.hint=st.sol=false}else st.v="end"}
  render();
  const c=$.querySelector(".chips");if(c)c.scrollLeft=sl;
- const t=a=="f"?$.querySelector(`.chip[data-v="${CSS.escape(v)}"]`):f&&$.querySelector(`[data-f="${f}"]`);
+ const t=f===null?$.querySelector(`[data-a="${a}"][data-v="${CSS.escape(v)}"]`):$.querySelector(`[data-f="${f}"]`);
  if(t)t.focus({preventScroll:true});
  if(a=="rate"||a=="reset"||a=="home")scrollTo(0,0);
 });

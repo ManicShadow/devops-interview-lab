@@ -2,7 +2,7 @@
 
 A mobile-first app for practising DevOps interviews. It has 111 scenarios across Linux, Kubernetes, Helm, ArgoCD, Terraform, Ansible, Docker, CI/CD, GitLab, Jenkins, Monitoring, service mesh, SRE, AWS, cloud, networking, security, system design and behavioural questions.
 
-Each incident scenario gives you a situation, an optional hint, then the troubleshooting steps and the commands to run, with a one-line explanation of each command. Behavioural questions give you a STAR structure and a sample answer. You can run a 5-question mock interview, filter by topic, search by keyword and track what you solved. Progress is stored in your browser only, and can be cleared with "Reset progress".
+Each incident scenario gives you a situation, an optional hint, then the troubleshooting steps and the commands to run, with a one-line explanation of each command. Behavioural questions give you a STAR structure and a sample answer. A separate Questions tab has short concept questions (answer out loud, then reveal). Both tabs support a 5-question mock session, filter by topic, search by keyword and track what you solved. Progress is stored in your browser only, and can be cleared with "Reset progress".
 
 It is a single static file (`index.html`) with no build step, no dependencies and no external requests. It follows the system light or dark theme.
 
@@ -19,6 +19,10 @@ Then open http://localhost:8000.
 3. The workflow in `.github/workflows/pages.yml` publishes the site on every push to `main`.
 
 On iPhone, open the site in Safari and use Share, Add to Home Screen.
+
+## Add a question
+
+Each entry in the `Q` array is `[topic, question, answer]`. The question text is its ID for saved progress.
 
 ## Add a scenario
 
