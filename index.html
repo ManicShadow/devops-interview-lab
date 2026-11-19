@@ -6,23 +6,30 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Interview Lab">
 <title>DevOps Interview Lab</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="description" content="Practise DevOps interviews: 111 real incident scenarios, hints, fixes and a 5-question mock mode.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#2e3440" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#eceff4" media="(prefers-color-scheme: light)">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232e3440'/%3E%3Cpath d='M9 11l6 5-6 5' fill='none' stroke='%23bf616a' stroke-width='3'/%3E%3Cpath d='M17 22h7' stroke='%23a3be8c' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAACZUlEQVR42u3dwXGCQBSA4bBDNc7oyQIsIBXYhB5Mikg8aBNWkE6YoZ4UEKMIKG/Z768gPD7eQnJItVpv3qRrJSMQHIJDcAgOwSE4BIfgEByCQ4JDcAgOwSE4BIfgEByCQ3BIcAgOwSE4BIfgEByCQ3AIDgkOwSE4BIfgEByCQ3AIDsEhOCQ4BIfg0DOrQ/002+PJLbkc9kF+kirIv9TAIiCR6XFgEZZIIiNy084nkcFHOBxkxJ+VT1kFw2FtZDGxOtoU4nzle2xSqOsvXMbtCbzeTcpiLnx4IZUXUsEhOASH4JDgEByCQ3AIDsEhOASH4BAcUp44zsuFOwfHvzLOywUicFghcPTVYIXAcWdPIGJz3NeDSIk4ut91PorDsWvaXdNaIXDcIuKUgWOcFeKUKfGF1CkDByJweBGBw4sIHE4ZOOZyykBQEI4ep4wKwoHIKNUzvjZHBhyDWFgtZR0rFobNMZSFnVEKjke3BRml4LAw4MACDizg8HoBh4UBBxZwTNiuaTv6GC7j4+v9GZfw/fkDx5SAPO4jluZx7/0BtnQcV31gAYdzBI7OICwMOCwMOASH8qo2gr9l99sqm0NwCA7BITgEh+CQ4BAcgkNwCA7BITg6tD2e3I9Qc5gAx+Ww56PHBG7M7UnVnhvFOlZe/xDk3iQT80KqeDgsj/izSgVeMxl5HCt8RJ5PtVpvfKRgERoHIgG3aSwc8rUiOASH4BAcEhyCQ3AIDsEhOASH4BAcgkOCQ3AIDsEhOASH4BAcgkNwCA4JDsEhOASH4BAcgkNwCA7BIcEhOASH4BAcgkNwCA7Nrl+TecV6LMr+jwAAAABJRU5ErkJggg==">
 <style>
-:root{--bg:#2e3440;--s1:#3b4252;--s2:#434c5e;--ln:#4c566a;--tx:#eceff4;--mu:#aab4c8;--ac:#bf616a;--ok:#a3be8c;--fr:#88c0d0;color-scheme:dark;box-sizing:border-box;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
-@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#eceff4;--s1:#e5e9f0;--s2:#d8dee9;--ln:#c4cbd9;--tx:#2e3440;--mu:#4c566a;--ok:#4f7a3a;--fr:#2f6f82;color-scheme:light}}
-:root[data-theme="light"]{--bg:#eceff4;--s1:#e5e9f0;--s2:#d8dee9;--ln:#c4cbd9;--tx:#2e3440;--mu:#4c566a;--ok:#4f7a3a;--fr:#2f6f82;color-scheme:light}
-:root[data-theme="dark"]{--bg:#2e3440;--s1:#3b4252;--s2:#434c5e;--ln:#4c566a;--tx:#eceff4;--mu:#aab4c8;--ok:#a3be8c;--fr:#88c0d0;color-scheme:dark}
+:root{--bg:#2e3440;--s1:#3b4252;--s2:#434c5e;--ln:#4c566a;--tx:#eceff4;--mu:#aab4c8;--ac:#bf616a;--acb:#a8444f;--ok:#a3be8c;--fr:#88c0d0;--on:#2e3440;color-scheme:dark;box-sizing:border-box;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px);-webkit-text-size-adjust:100%}
+@media(prefers-color-scheme:light){:root{--bg:#eceff4;--s1:#e5e9f0;--s2:#d8dee9;--ln:#c4cbd9;--tx:#2e3440;--mu:#4c566a;--ok:#4f7a3a;--fr:#2f6f82;--on:#fff;color-scheme:light}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 "IBM Plex Sans",system-ui,-apple-system,sans-serif}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 #app{max-width:640px;margin:0 auto;padding:20px 18px 40px}
 h1{font-size:30px;line-height:1.15;margin:8px 0 6px;font-weight:600;letter-spacing:-.02em}
 .sub{color:var(--mu);margin:0 0 18px}
-.chips{display:flex;gap:8px;overflow-x:auto;margin:0 -18px;padding:0 18px 8px}
+.chips{display:flex;gap:8px;overflow-x:auto;margin:0 -18px;padding:0 18px 8px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
 .chip{flex:none;border:1px solid var(--ln);background:none;color:var(--tx);border-radius:999px;padding:7px 14px;font:inherit;font-size:14px}
-.chip[aria-pressed=true]{background:var(--fr);border-color:var(--fr);color:#2e3440;font-weight:500}
+.chip[aria-pressed=true]{background:var(--fr);border-color:var(--fr);color:var(--on);font-weight:500}
 .btn{display:block;width:100%;border:0;border-radius:12px;padding:15px;font:inherit;font-weight:600;background:var(--s2);color:var(--tx);margin-top:10px}
-.btn.p{background:var(--ac);color:#fff}
-.btn.g{background:var(--ok);color:#2e3440}
+.btn.p{background:var(--acb);color:#fff}
+.btn.g{background:var(--ok);color:var(--on)}
+.btn.q{background:none;color:var(--mu);font-weight:400;font-size:14px}
 .row{display:flex;gap:10px}.row .btn{flex:1}
 .stat{color:var(--mu);font-size:14px;margin:18px 0 0}
 .item{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:var(--s1);border:0;color:var(--tx);border-radius:12px;padding:14px;margin-top:8px;font:inherit}
@@ -38,20 +45,23 @@ h1{font-size:30px;line-height:1.15;margin:8px 0 6px;font-weight:600;letter-spaci
 .hint{color:var(--fr);margin:12px 0}
 h3{font-size:17px;margin:22px 0 4px}
 ol{padding-left:22px;margin:6px 0}li{margin:8px 0}
-pre{background:#242933;color:#d8dee9;font:13px/1.55 "IBM Plex Mono",ui-monospace,Menlo,monospace;padding:14px;border-radius:10px;overflow-x:auto;margin:12px 0}
+pre{background:#242933;color:#d8dee9;font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;padding:14px;border-radius:10px;overflow-x:auto;margin:12px 0;tab-size:2}
 #sq{width:100%;background:var(--s1);border:1px solid var(--ln);color:var(--tx);border-radius:12px;padding:13px 14px;font:inherit;margin:0 0 14px}
 #sq:focus{outline:2px solid var(--fr);outline-offset:1px}
 .btn:disabled{opacity:.5}
 .ex{margin:-4px 0 16px;color:var(--mu);font-size:14px;line-height:1.5}
 .take{border-top:1px solid var(--ln);padding-top:12px;margin-top:16px;color:var(--mu)}
 .score{font-size:52px;font-weight:600;margin:12px 0 0}
-button{cursor:pointer}
-button:focus-visible{outline:2px solid var(--fr);outline-offset:2px}
+button{cursor:pointer;touch-action:manipulation}
+button:focus-visible,[tabindex="-1"]:focus-visible{outline:2px solid var(--fr);outline-offset:2px}
+[tabindex="-1"]:focus:not(:focus-visible){outline:0}
 </style>
 </head>
 <body>
-<div id="app"></div>
+<main id="app"></main>
+<noscript><p style="padding:20px;font-family:system-ui">This app needs JavaScript.</p></noscript>
 <script>
+
 const T=["Linux","Kubernetes","Helm","ArgoCD","Terraform","Ansible","Docker","CI/CD","GitLab","Jenkins","Monitoring","Mesh","SRE","AWS","Cloud","Networking","Security","Design","Behavioural"];
 const S=[
 ["Linux","Mid","Disk is “full” but df shows free space","Deploys fail with “No space left on device”, yet df -h shows /var at 40%. What do you check?","Space has two currencies. One of them isn’t bytes.",
@@ -113,7 +123,7 @@ const S=[
 ["Kubernetes","Junior","ImagePullBackOff from a private registry","A new deployment shows ErrImagePull, then ImagePullBackOff. The image exists in the registry.","The cluster needs credentials too.",["kubectl describe pod: the event shows the real error (unauthorized, not found, timeout).","Check the image name and tag for typos, and that the tag really exists.","Private registry: create a docker-registry Secret and reference it in imagePullSecrets, or attach it to the ServiceAccount.","On EKS/GKE/AKS, check the node role or workload identity has pull permission."],["kubectl describe pod <pod> | grep -A6 Events","kubectl create secret docker-registry regcred --docker-server=<host> --docker-username=<u> --docker-password=<p> -n <ns>","kubectl patch sa default -n <ns> -p '{\"imagePullSecrets\":[{\"name\":\"regcred\"}]}'"],"The Events line tells you whether it is auth, naming or network."],
 ["Kubernetes","Senior","A node goes NotReady","One worker node flips to NotReady and its pods are being evicted.","Start from the kubelet, not the pods.",["kubectl describe node: read Conditions (DiskPressure, MemoryPressure, PIDPressure, Ready).","SSH to the node: check kubelet and container runtime status and logs.","Common causes: disk full from images or logs, runtime crash, lost network to the API server, clock skew or expired certs.","Cordon the node, drain it gracefully, fix or replace it, then uncordon.","With autoscaling, simply terminate the bad node and let a fresh one join."],["kubectl describe node <node> | grep -A10 Conditions","systemctl status kubelet containerd","journalctl -u kubelet --since '15 min ago'","kubectl drain <node> --ignore-daemonsets --delete-emptydir-data"],"Nodes are cattle: diagnose briefly, then replace."],
 ["Kubernetes","Senior","Requests fail during every rollout","Each deployment causes a burst of 502s for a few seconds, even with 3 replicas.","Traffic is still sent to pods that are shutting down.",["On termination, endpoint removal and SIGTERM race each other, so the pod can get requests after it starts shutting down.","Add a preStop sleep (5 to 10 s) so the endpoint is removed first, and handle SIGTERM gracefully.","Set terminationGracePeriodSeconds longer than the preStop plus drain time.","A readinessProbe must only pass when the app can really serve.","Use maxUnavailable: 0 and a PodDisruptionBudget."],["lifecycle:\n  preStop:\n    exec:\n      command: [\"sleep\", \"8\"]","strategy:\n  rollingUpdate:\n    maxUnavailable: 0\n    maxSurge: 1"],"Zero downtime needs readiness, preStop and graceful shutdown together."],
-["Kubernetes","Mid","HPA shows &lt;unknown&gt; and never scales","Load rises, but the HorizontalPodAutoscaler stays at the minimum and shows &lt;unknown&gt;/70% CPU.","HPA needs a metric source and a denominator.",["kubectl describe hpa: look for FailedGetResourceMetric.","Is metrics-server installed and healthy? kubectl top pods must work.","Utilisation is a percentage of requests, so containers without resources.requests give no value.","Check min/max replicas and that the target kind and name are correct.","For non-CPU signals use custom metrics (Prometheus adapter) or KEDA."],["kubectl describe hpa <name>","kubectl top pods -n <ns>","kubectl get apiservice v1beta1.metrics.k8s.io"],"No CPU requests means no CPU-based autoscaling."],
+["Kubernetes","Mid","HPA shows <unknown> and never scales","Load rises, but the HorizontalPodAutoscaler stays at the minimum and shows <unknown>/70% CPU.","HPA needs a metric source and a denominator.",["kubectl describe hpa: look for FailedGetResourceMetric.","Is metrics-server installed and healthy? kubectl top pods must work.","Utilisation is a percentage of requests, so containers without resources.requests give no value.","Check min/max replicas and that the target kind and name are correct.","For non-CPU signals use custom metrics (Prometheus adapter) or KEDA."],["kubectl describe hpa <name>","kubectl top pods -n <ns>","kubectl get apiservice v1beta1.metrics.k8s.io"],"No CPU requests means no CPU-based autoscaling."],
 ["Terraform","Senior","Plan wants to destroy and recreate the database","After a refactor, terraform plan shows aws_db_instance must be replaced. Do you apply?","Never apply a replace on stateful resources without understanding it.",["Read the plan: the line marked “forces replacement” names the attribute.","If you only renamed or moved the resource, use a moved block so state follows the code.","If an argument change forces it, check whether it can be changed in place or ignored.","Protect data resources with lifecycle prevent_destroy and take a snapshot first.","Apply only after review in CI with a saved plan."],["terraform plan -out=tfplan && terraform show tfplan","moved {\n  from = aws_db_instance.db\n  to   = module.data.aws_db_instance.db\n}","lifecycle {\n  prevent_destroy = true\n}"],"Always find the attribute that forces replacement."],
 ["Terraform","Senior","Structure state for many teams","One giant state file makes plans slow and risky. How do you split it?","Blast radius and ownership.",["Split state by lifecycle and owner: network, shared platform, each app or environment.","Use a remote backend with locking and per-state access control.","Share values through outputs and remote state or data sources, not copy-paste.","Put reusable logic in versioned modules, and use separate directories per environment rather than relying only on workspaces.","Run plan and apply in CI, with policy checks."],["terraform {\n  backend \"s3\" {\n    bucket = \"tf-state\"\n    key    = \"prod/network.tfstate\"\n    use_lockfile = true\n  }\n}"],"Small states mean fast plans and small blast radius."],
 ["CI/CD","Mid","Slow, flaky GitHub Actions pipeline","The pipeline takes 25 minutes and sometimes fails on tests that pass on rerun.","Cache, parallelise, and isolate.",["Cache dependencies and build output with actions/cache or the setup action’s cache option.","Split independent jobs and use a matrix to run test shards in parallel.","Cancel superseded runs with a concurrency group.","Flaky tests: find them, quarantine them, and fix shared state or timing. Don’t just add retries.","Use larger or self-hosted runners only after the above."],["concurrency:\n  group: ci-${{ github.ref }}\n  cancel-in-progress: true","strategy:\n  matrix:\n    shard: [1, 2, 3, 4]"],"Retries hide flakiness. Caching and parallelism fix speed."],
@@ -208,11 +218,64 @@ const S=[
 ["Linux","Senior","High latency from CPU throttling in a container","A containerised service is slow, though the node’s CPU is mostly idle.","CPU limits throttle even on an idle node.",["A CPU limit throttles the container when it exceeds its quota in a period.","Read cpu.stat for the throttled period counts.","Compare the limit with real usage peaks.","Raise or remove the CPU limit and keep sensible requests."],["cat /sys/fs/cgroup/cpu.stat","cat /sys/fs/cgroup/cpu.max","kubectl top pod <pod>","rate(container_cpu_cfs_throttled_periods_total[5m])"],"Low node CPU doesn’t mean the container isn’t throttled."],
 ["Linux","Senior","A server rebooted by itself at 03:12","Nobody restarted a production server, but it rebooted overnight.","Read the last messages of the previous boot.",["Check the reboot history.","Read the end of the previous boot’s journal.","Look for an OOM storm, kernel panic, watchdog, hardware error or provider maintenance.","Check crash dumps and cloud events, then enable kdump and alerts."],["last -x reboot shutdown | head","journalctl -b -1 -n 50 --no-pager","ls /var/crash /var/lib/systemd/pstore","dmesg -T | grep -iE 'panic|mce|oom'"],"Persistent logs and kdump make surprise reboots explainable."]
 ];
-let done={};try{done=JSON.parse(localStorage.getItem("il1")||"{}")}catch(e){}
-const save=()=>{try{localStorage.setItem("il1",JSON.stringify(done))}catch(e){}};
+
+const ID=S.map(s=>s[2]);
+const ld=k=>{try{return JSON.parse(localStorage.getItem(k)||"{}")||{}}catch(e){return{}}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const mig=o=>{const r={};for(const k in o){const t=/^\d+$/.test(k)?ID[k]:k;if(t)r[t]=o[k]}return r};
+let done=ld("il2"),hist=ld("il2h");
+if(!Object.keys(done).length&&!Object.keys(hist).length){done=mig(ld("il1"));hist=mig(ld("il1h"));sv("il2",done);sv("il2h",hist)}
 const st={v:"home",f:"All",s:"",q:[],i:0,hint:false,sol:false,res:{}};
 const $=document.getElementById("app");
+let pushed=false;
 const EX=[
+[/ignoreDifferences/,'Tells Argo CD to ignore drift on spec.replicas, so an HPA can change the replica count without the app showing OutOfSync. RespectIgnoreDifferences stops syncs from resetting it.'],
+[/^import [{]/,'Terraform import block: adopts an existing resource (here an S3 bucket) into state on the next apply, and the plan shows it first.'],
+[/serial:/,'Rolls the play out in batches (1 host, then 10%, then 25%) and aborts the run if more than 10% of hosts fail.'],
+[/^\[defaults\]/,'ansible.cfg tuning: more parallel forks, per-task timing with profile_tasks, and SSH pipelining to cut round trips.'],
+[/^FROM golang/,'Multi-stage build: compile in the Go image, then copy only the static binary into a minimal distroless image that runs as a non-root user.'],
+[/preStop/,'Pod lifecycle hook that sleeps 8 seconds before SIGTERM, so endpoints and load balancers stop sending traffic first.'],
+[/maxUnavailable: 0/,'Rolling update that never removes a ready pod before a new one is ready, adding one extra pod at a time.'],
+[/^moved [{]/,'Terraform moved block: records that a resource changed address, so the refactor does not destroy and recreate it.'],
+[/prevent_destroy/,'Makes Terraform fail any plan that would destroy this resource. A guard for databases and state buckets.'],
+[/backend "s3"/,'Remote state in S3 with native locking (use_lockfile), so two applies cannot run at once.'],
+[/cancel-in-progress/,'Concurrency group: a new run on the same ref cancels the older one that is still running.'],
+[/matrix:/,'Matrix strategy: runs the job four times in parallel, one per shard, to cut total test time.'],
+[/id-token: write/,'Lets the job request an OIDC token, so it can authenticate to the cloud with no stored secret. contents: read keeps repo access minimal.'],
+[/configure-aws-credentials/,'Exchanges the job’s OIDC token for short-lived AWS credentials by assuming the named role.'],
+[/alert: HighErrorRate/,'Prometheus alert: pages when more than 5% of requests return 5xx for 10 minutes, so short blips do not wake anyone.'],
+[/^histogram_quantile/,'Computes p99 latency per route from histogram buckets over the last 5 minutes. Keep le in the grouping.'],
+[/^agent [{]/,'Jenkins pipeline directive: run on an agent that carries the linux-docker label.'],
+[/^options [{] timeout/,'Aborts the build after 30 minutes, so a hung job does not hold an executor.'],
+[/^withCredentials/,'Injects a stored secret as an environment variable for the block only, and masks it in the console log.'],
+[/^jenkins:/,'Jenkins Configuration as Code: controller settings live in YAML in Git. Zero executors keeps builds off the controller.'],
+[/^sonar[.]newCode/,'Defines “new code” as everything changed since main, so the quality gate judges the pull request and not old debt.'],
+[/^up[{]/,'Returns 1 for each healthy scraped target of the api job and 0 for a target Prometheus cannot reach.'],
+[/^rate[(]http_requests_total/,'Per-second request rate averaged over 5 minutes. The base for traffic and error-rate queries.'],
+[/^topk[(]/,'Lists the 10 metric names with the most series, to find what drives cardinality and memory.'],
+[/metric_relabel_configs/,'Drops the high-cardinality user_id label at scrape time, before it is stored.'],
+[/^PR: +lint/,'A pipeline outline: cheap checks on every PR, one immutable image built on main, then promotion through Git and a gradual production rollout.'],
+[/^Pattern +RTO/,'Disaster recovery options ordered by recovery time and cost: faster recovery means paying for more standby capacity.'],
+[/required_providers/,'Pins the AWS provider to 5.70 or newer but below 6.0, so a major upgrade cannot arrive unreviewed.'],
+[/sensitive = true/,'Hides the variable’s value in plan output. It is still stored in state, so protect the state.'],
+[/^roles[/]nginx/,'Standard Ansible role layout: defaults, tasks, handlers and templates each live in their own folder.'],
+[/^on:/,'Trigger: run only on pushes to main that touch files under src.'],
+[/packages: write/,'Least-privilege token: read the repo and push packages, nothing else.'],
+[/^job:/,'GitLab CI: only runners tagged docker pick up this job.'],
+[/^http:/,'Istio VirtualService routes: 90% of traffic to v1 and 10% to v2, a weighted canary.'],
+[/^14:02/,'Incident timeline: the timestamps let you compute time to detect, to declare and to recover.'],
+[/^1 - [(]sum/,'Error ratio over one hour: one minus the share of non-5xx requests. The basis of an SLO burn-rate alert.'],
+[/^# page when burn/,'A burn rate of 14.4 over one hour spends 2% of a 30-day error budget, which justifies paging.'],
+[/^[*][/]5 /,'Cron entry: runs the backup script every 5 minutes and appends output and errors to a log.'],
+[/^[/]var[/]log[/]app/,'logrotate policy: daily, keep 7 compressed files. copytruncate rotates without restarting the process.'],
+[/^UUID=/,'fstab entry: mounts by UUID so device renaming cannot break it. nofail lets boot continue if the disk is missing; the last 2 is the fsck order.'],
+[/^UseDNS no/,'sshd settings that skip reverse DNS and GSSAPI lookups, a common cause of slow SSH logins.'],
+[/^PasswordAuthentication no/,'Hardens sshd: keys only and no direct root login.'],
+[/Restart=on-failure/,'Restarts the service when it exits with an error, waiting 5 seconds between attempts.'],
+[/EnvironmentFile=[/]etc[/]myapp/,'Gives the unit an explicit environment file, working directory and user, since systemd does not read your shell profile.'],
+[/^\[Journal\]/,'Keeps the journal on disk across reboots and caps it at 1 GB.'],
+[/^#![/]usr[/]bin[/]env bash/,'Strict mode: stop on errors, unset variables and failed pipes. The trap reports the failing line.'],
+[/cfs_throttled/,'Rate of CPU-throttled periods per container. A rising value confirms CPU limits are causing the latency.'],
 [/df -i/,'df -h prints disk usage in readable sizes; df -i prints inode usage. 100% inodes means no new files even with free space.'],
 [/^df /,'Shows used and free space per filesystem; -h makes sizes human readable.'],
 [/^for d in/,'Loops over each directory and counts the files inside it, to find where many small files pile up.'],
@@ -379,63 +442,70 @@ const EX=[
 [/^cat /,'Prints a file to inspect its current contents or settings.']
 ];
 const why=c=>{for(const[r,t]of EX)if(r.test(c))return t;return""};
-const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const H=S.map(s=>s.flat().join(" ").toLowerCase());
-const hit=i=>st.s.toLowerCase().split(/\s+/).filter(Boolean).every(w=>H[i].includes(w));
-const pool=()=>S.map((s,i)=>i).filter(i=>(st.f=="All"||S[i][0]==st.f)&&hit(i));
-const mk=()=>{const n=pool().length;return n?`Start a mock interview (${Math.min(5,n)} questions)`:"No matching questions"};
-const list=()=>{const p=pool(),n=Object.values(done).filter(x=>x==1).length;
- return `<p class="stat">${st.s?p.length+" matching":n+" of "+S.length+" solved"}</p>`+(p.length?p.map(i=>`<button class="item" data-a="open" data-v="${i}"><span class="dot ${done[i]===1?"y":done[i]===0?"n":""}"></span><span><b>${S[i][2]}</b><small>${S[i][0]}, ${S[i][1]}</small></span></button>`).join(""):`<p class="sub">No scenarios match. Try a shorter keyword.</p>`)};
-let hist={};try{hist=JSON.parse(localStorage.getItem("il1h")||"{}")}catch(e){}
+const pool=()=>{const w=st.s.toLowerCase().split(/\s+/).filter(Boolean);
+ return S.reduce((a,s,i)=>{if((st.f=="All"||s[0]==st.f)&&w.every(x=>H[i].includes(x)))a.push(i);return a},[])};
+const solved=p=>p.filter(i=>done[ID[i]]===1).length;
+const mk=p=>{const n=Math.min(5,p.length);return n?`Start a mock interview (${n} question${n>1?"s":""})`:"No matching questions"};
+const stat=p=>st.s||st.f!="All"?`${p.length} scenario${p.length==1?"":"s"}, ${solved(p)} solved`:`${solved(p)} of ${S.length} solved`;
+const list=p=>`<p class="stat" aria-live="polite">${stat(p)}</p>`+(p.length?p.map(i=>{const d=done[ID[i]];return `<button class="item" data-a="open" data-v="${i}"><span class="dot ${d===1?"y":d===0?"n":""}"></span><span><b>${esc(S[i][2])}</b><small>${esc(S[i][0])}, ${esc(S[i][1])}</small></span></button>`}).join(""):`<p class="sub">No scenarios match. Try a shorter keyword.</p>`);
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function pick(n){
- const p=pool().map(i=>[i,hist[i]||0,Math.random()]).sort((a,b)=>a[1]-b[1]||a[2]-b[2]).slice(0,n).map(x=>x[0]);
- const t=Math.max(0,...Object.values(hist))+1;p.forEach(i=>hist[i]=t);
- try{localStorage.setItem("il1h",JSON.stringify(hist))}catch(e){}
- return p.sort(()=>Math.random()-.5);
+ const p=shuffle(pool()).sort((a,b)=>(hist[ID[a]]||0)-(hist[ID[b]]||0)).slice(0,n);
+ const t=Math.max(0,...Object.values(hist))+1;p.forEach(i=>hist[ID[i]]=t);sv("il2h",hist);
+ return shuffle(p);
 }
-function go(q){st.q=q;st.i=0;st.hint=st.sol=false;st.res={};st.v="card";render();scrollTo(0,0)}
+function go(q){st.q=q;st.i=0;st.hint=st.sol=false;st.res={};st.v="card";
+ if(!pushed){history.pushState(null,"");pushed=true}
+ render();scrollTo(0,0)}
 function render(){
 if(st.v=="home"){
- const n=Object.values(done).filter(x=>x==1).length,p=pool();
- $.innerHTML=`<h1>DevOps Interview Lab</h1><p class="sub">Real incidents and design questions. Work it out first, then check the fix.</p>
- <input id="sq" type="search" placeholder="Search keywords, e.g. OOM, helm, dns" value="${esc(st.s).replace(/"/g,"&quot;")}" autocomplete="off" autocapitalize="off" spellcheck="false">
- <div class="chips">${["All",...T].map(t=>`<button class="chip" aria-pressed="${st.f==t}" data-a="f" data-v="${t}">${t}</button>`).join("")}</div>
- <button class="btn p" id="mk" data-a="mock"${pool().length?"":" disabled"}>${mk()}</button>
- <div id="lst">${list()}</div>
- `;
+ const p=pool();
+ $.innerHTML=`<h1 tabindex="-1" data-f="nav">DevOps Interview Lab</h1><p class="sub">Real incidents and design questions. Work it out first, then check the fix.</p>
+ <input id="sq" type="search" aria-label="Search scenarios" placeholder="Search keywords, e.g. OOM, helm, dns" value="${esc(st.s)}" autocomplete="off" autocapitalize="off" spellcheck="false">
+ <div class="chips" role="group" aria-label="Filter by topic">${["All",...T].map(t=>`<button class="chip" aria-pressed="${st.f==t}" data-a="f" data-v="${esc(t)}">${esc(t)}</button>`).join("")}</div>
+ <button class="btn p" id="mk" data-a="mock"${p.length?"":" disabled"}>${mk(p)}</button>
+ <div id="lst">${list(p)}</div>${Object.keys(done).length?`<button class="btn q" data-a="reset">Reset progress</button>`:""}`;
 }else if(st.v=="card"){
- const s=S[st.q[st.i]];
+ const s=S[st.q[st.i]],b=s[0]=="Behavioural";
  $.innerHTML=`<div class="bar"><button data-a="home">Exit</button><span>${st.i+1} of ${st.q.length}</span></div>
- <section class="alert"><span class="tag">${s[0]}</span><span class="tag">${s[1]}</span><h2>${s[2]}</h2><p>${s[3]}</p>${st.hint?`<p class="hint">Hint: ${s[4]}</p>`:""}</section>
- ${st.sol?`<h3>${s[0]=="Behavioural"?"How to structure your answer":"How to resolve it"}</h3><ol>${s[5].map(x=>`<li>${x}</li>`).join("")}</ol><h3>${s[0]=="Behavioural"?"Sample answer":"Commands and what they do"}</h3>${s[6].map(c=>s[0]=="Behavioural"?`<p>${c}</p>`:`<pre>${esc(c)}</pre>${why(c)?`<p class="ex">${why(c)}</p>`:""}`).join("")}<p class="take">${s[7]}</p>
+ <section class="alert"><span class="tag">${esc(s[0])}</span><span class="tag">${esc(s[1])}</span><h2 tabindex="-1" data-f="nav">${esc(s[2])}</h2><p>${esc(s[3])}</p>${st.hint?`<p class="hint">Hint: ${esc(s[4])}</p>`:""}</section>
+ ${st.sol?`<h3 tabindex="-1" data-f="sol">${b?"How to structure your answer":"How to resolve it"}</h3><ol>${s[5].map(x=>`<li>${esc(x)}</li>`).join("")}</ol><h3>${b?"Sample answer":"Commands and what they do"}</h3>${s[6].map(c=>{if(b)return `<p>${esc(c)}</p>`;const w=why(c);return `<pre>${esc(c)}</pre>${w?`<p class="ex">${esc(w)}</p>`:""}`}).join("")}<p class="take">${esc(s[7])}</p>
  <div class="row"><button class="btn" data-a="rate" data-v="0">I missed it</button><button class="btn g" data-a="rate" data-v="1">I got it</button></div>`
- :`${st.hint?"":`<button class="btn" data-a="hint">Show a hint</button>`}<button class="btn p" data-a="sol">Show solution</button>`}`;
+ :`${st.hint?"":`<button class="btn" data-a="hint">Show a hint</button>`}<button class="btn p" data-a="sol" data-f="hint">Show solution</button>`}`;
 }else{
  const ids=st.q,ok=ids.filter(i=>st.res[i]==1).length,miss=ids.filter(i=>st.res[i]==0);
- $.innerHTML=`<div class="bar"><span>Session complete</span></div><div class="score">${ok} / ${ids.length}</div>
+ $.innerHTML=`<div class="bar"><span tabindex="-1" data-f="nav">Session complete</span></div><div class="score">${ok} / ${ids.length}</div>
  <p class="sub">${miss.length?"Review these and try them again:":"Clean sweep."}</p>
- ${miss.map(i=>`<div class="item"><span class="dot n"></span><span><b>${S[i][2]}</b><small>${S[i][0]}</small></span></div>`).join("")}
+ ${miss.map(i=>`<div class="item"><span class="dot n"></span><span><b>${esc(S[i][2])}</b><small>${esc(S[i][0])}</small></span></div>`).join("")}
  ${miss.length?`<button class="btn p" data-a="retry">Retry missed</button>`:""}<button class="btn" data-a="home">Back to scenarios</button>`;
 }}
 document.addEventListener("input",e=>{
  if(e.target.id!="sq")return;
- st.s=e.target.value;
- document.getElementById("lst").innerHTML=list();
- const b=document.getElementById("mk");b.textContent=mk();b.disabled=!pool().length;
+ st.s=e.target.value;const p=pool(),b=document.getElementById("mk");
+ document.getElementById("lst").innerHTML=list(p);b.textContent=mk(p);b.disabled=!p.length;
 });
 document.addEventListener("click",e=>{
  const b=e.target.closest("[data-a]");if(!b)return;const a=b.dataset.a,v=b.dataset.v;
- if(a=="f")st.f=v;
+ const cs=$.querySelector(".chips"),sl=cs?cs.scrollLeft:0;let f="nav";
+ if(a=="f"){st.f=v;f=null}
  else if(a=="mock")return go(pick(5));
  else if(a=="open")return go([+v]);
- else if(a=="home"){st.v="home";scrollTo(0,0)}
- else if(a=="hint")st.hint=true;
- else if(a=="sol")st.sol=true;
+ else if(a=="home"){if(pushed){history.back();return}st.v="home"}
+ else if(a=="hint"){st.hint=true;f="hint"}
+ else if(a=="sol"){st.sol=true;f="sol"}
  else if(a=="retry")return go(st.q.filter(i=>st.res[i]==0));
- else if(a=="rate"){const id=st.q[st.i];st.res[id]=+v;done[id]=+v;save();
-  if(st.i+1<st.q.length){st.i++;st.hint=st.sol=false}else st.v="end";scrollTo(0,0)}
+ else if(a=="reset"){if(!confirm("Clear all saved progress?"))return;done={};hist={};sv("il2",done);sv("il2h",hist)}
+ else if(a=="rate"){const id=st.q[st.i];st.res[id]=+v;done[ID[id]]=+v;sv("il2",done);
+  if(st.i+1<st.q.length){st.i++;st.hint=st.sol=false}else st.v="end"}
  render();
+ const c=$.querySelector(".chips");if(c)c.scrollLeft=sl;
+ const t=a=="f"?$.querySelector(`.chip[data-v="${CSS.escape(v)}"]`):f&&$.querySelector(`[data-f="${f}"]`);
+ if(t)t.focus({preventScroll:true});
+ if(a=="rate"||a=="reset"||a=="home")scrollTo(0,0);
 });
+addEventListener("popstate",()=>{pushed=false;if(st.v!="home"){st.v="home";render();scrollTo(0,0)}});
 render();
 </script>
 </body>
