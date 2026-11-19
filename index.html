@@ -39,6 +39,9 @@ h1{font-size:30px;line-height:1.15;margin:8px 0 6px;font-weight:600;letter-spaci
 h3{font-size:17px;margin:22px 0 4px}
 ol{padding-left:22px;margin:6px 0}li{margin:8px 0}
 pre{background:#242933;color:#d8dee9;font:13px/1.55 "IBM Plex Mono",ui-monospace,Menlo,monospace;padding:14px;border-radius:10px;overflow-x:auto;margin:12px 0}
+#sq{width:100%;background:var(--s1);border:1px solid var(--ln);color:var(--tx);border-radius:12px;padding:13px 14px;font:inherit;margin:0 0 14px}
+#sq:focus{outline:2px solid var(--fr);outline-offset:1px}
+.btn:disabled{opacity:.5}
 .ex{margin:-4px 0 16px;color:var(--mu);font-size:14px;line-height:1.5}
 .take{border-top:1px solid var(--ln);padding-top:12px;margin-top:16px;color:var(--mu)}
 .score{font-size:52px;font-weight:600;margin:12px 0 0}
@@ -207,7 +210,7 @@ const S=[
 ];
 let done={};try{done=JSON.parse(localStorage.getItem("il1")||"{}")}catch(e){}
 const save=()=>{try{localStorage.setItem("il1",JSON.stringify(done))}catch(e){}};
-const st={v:"home",f:"All",q:[],i:0,hint:false,sol:false,res:{}};
+const st={v:"home",f:"All",s:"",q:[],i:0,hint:false,sol:false,res:{}};
 const $=document.getElementById("app");
 const EX=[
 [/df -i/,'df -h prints disk usage in readable sizes; df -i prints inode usage. 100% inodes means no new files even with free space.'],
@@ -377,7 +380,12 @@ const EX=[
 ];
 const why=c=>{for(const[r,t]of EX)if(r.test(c))return t;return""};
 const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
-const pool=()=>S.map((s,i)=>i).filter(i=>st.f=="All"||S[i][0]==st.f);
+const H=S.map(s=>s.flat().join(" ").toLowerCase());
+const hit=i=>st.s.toLowerCase().split(/\s+/).filter(Boolean).every(w=>H[i].includes(w));
+const pool=()=>S.map((s,i)=>i).filter(i=>(st.f=="All"||S[i][0]==st.f)&&hit(i));
+const mk=()=>{const n=pool().length;return n?`Start a mock interview (${Math.min(5,n)} questions)`:"No matching questions"};
+const list=()=>{const p=pool(),n=Object.values(done).filter(x=>x==1).length;
+ return `<p class="stat">${st.s?p.length+" matching":n+" of "+S.length+" solved"}</p>`+(p.length?p.map(i=>`<button class="item" data-a="open" data-v="${i}"><span class="dot ${done[i]===1?"y":done[i]===0?"n":""}"></span><span><b>${S[i][2]}</b><small>${S[i][0]}, ${S[i][1]}</small></span></button>`).join(""):`<p class="sub">No scenarios match. Try a shorter keyword.</p>`)};
 let hist={};try{hist=JSON.parse(localStorage.getItem("il1h")||"{}")}catch(e){}
 function pick(n){
  const p=pool().map(i=>[i,hist[i]||0,Math.random()]).sort((a,b)=>a[1]-b[1]||a[2]-b[2]).slice(0,n).map(x=>x[0]);
@@ -390,10 +398,11 @@ function render(){
 if(st.v=="home"){
  const n=Object.values(done).filter(x=>x==1).length,p=pool();
  $.innerHTML=`<h1>DevOps Interview Lab</h1><p class="sub">Real incidents and design questions. Work it out first, then check the fix.</p>
+ <input id="sq" type="search" placeholder="Search keywords, e.g. OOM, helm, dns" value="${esc(st.s).replace(/"/g,"&quot;")}" autocomplete="off" autocapitalize="off" spellcheck="false">
  <div class="chips">${["All",...T].map(t=>`<button class="chip" aria-pressed="${st.f==t}" data-a="f" data-v="${t}">${t}</button>`).join("")}</div>
- <button class="btn p" data-a="mock">Start a mock interview (${Math.min(5,p.length)} questions)</button>
- <p class="stat">${n} of ${S.length} solved</p>
- ${p.map(i=>`<button class="item" data-a="open" data-v="${i}"><span class="dot ${done[i]===1?"y":done[i]===0?"n":""}"></span><span><b>${S[i][2]}</b><small>${S[i][0]}, ${S[i][1]}</small></span></button>`).join("")}`;
+ <button class="btn p" id="mk" data-a="mock"${pool().length?"":" disabled"}>${mk()}</button>
+ <div id="lst">${list()}</div>
+ `;
 }else if(st.v=="card"){
  const s=S[st.q[st.i]];
  $.innerHTML=`<div class="bar"><button data-a="home">Exit</button><span>${st.i+1} of ${st.q.length}</span></div>
@@ -408,6 +417,12 @@ if(st.v=="home"){
  ${miss.map(i=>`<div class="item"><span class="dot n"></span><span><b>${S[i][2]}</b><small>${S[i][0]}</small></span></div>`).join("")}
  ${miss.length?`<button class="btn p" data-a="retry">Retry missed</button>`:""}<button class="btn" data-a="home">Back to scenarios</button>`;
 }}
+document.addEventListener("input",e=>{
+ if(e.target.id!="sq")return;
+ st.s=e.target.value;
+ document.getElementById("lst").innerHTML=list();
+ const b=document.getElementById("mk");b.textContent=mk();b.disabled=!pool().length;
+});
 document.addEventListener("click",e=>{
  const b=e.target.closest("[data-a]");if(!b)return;const a=b.dataset.a,v=b.dataset.v;
  if(a=="f")st.f=v;
